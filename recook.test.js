@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Antonio Alvarado Hernández
+
 const { Recooker } = require('./recook')
 
 test('Set a property with a single String value', () => {
