@@ -1,6 +1,6 @@
 {
   "name": "recook",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A JSON tree transformation micro-engine (inspired by adapt)",
   "scripts": {
     "test": "jest"

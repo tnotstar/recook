@@ -3,16 +3,16 @@
 class Recooker {
   constructor(name, functor) {
     this.name = name || 'Recooker()'
-    this.functor = functor || ((_) => JSON.parse(JSON.stringify(_)))
+    this.functor = functor || ((_) => JSON.parse(JSON.stringify(_) || null))
   }
 
-  cook(object) {
+  cook($) {
     let cooker = this
     while (cooker) {
-      object = cooker.functor(object)
+      $ = cooker.functor($)
       cooker = cooker.next
     }
-    return object
+    return $
   }
 
   recook(name, functor) {
@@ -24,19 +24,18 @@ class Recooker {
   }
 
   set(name, value) {
-    return this.recook(`set(${name}, ${value})`, (object) => {
-      object[name] = value
-      return object
+    return this.recook(`set(${name}, ${value})`, ($) => {
+      return Object.assign($ || {}, { [name]: value })
     })
   }
 
   rename(newname, oldname) {
-    return this.recook(`rename(${newname}, ${oldname})`, (object) => {
-      if ('undefined' !== typeof object[oldname]) {
-        object[newname] = object[oldname]
-        delete object[oldname]
+    return this.recook(`rename(${newname}, ${oldname})`, ($) => {
+      if ('undefined' !== typeof $[oldname]) {
+        $[newname] = $[oldname]
+        delete $[oldname]
       }
-      return object
+      return $
     })
   }
 }
