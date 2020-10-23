@@ -25,7 +25,8 @@ class Recooker {
 
   set(name, value) {
     return this.recook(`set(${name}, ${value})`, ($) => {
-      return Object.assign($ || {}, { [name]: value })
+      return Object.assign($ || {},
+        { [name]: typeof value === 'function'? value($): value })
     })
   }
 
