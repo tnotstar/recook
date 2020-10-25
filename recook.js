@@ -1,7 +1,6 @@
 // Copyright (c) 2020 Antonio Alvarado Hernández
 
 class Recooker {
-
   constructor({ label, taste, cook, ...options } = {}) {
     this.label = label || 'Recooker()'
     this.taste = taste || ($ => true)
