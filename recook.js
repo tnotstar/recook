@@ -1,40 +1,49 @@
 // Copyright (c) 2020 Antonio Alvarado Hernández
 
 class Recooker {
-  constructor(name, functor) {
-    this.name = name || 'Recooker()'
-    this.functor = functor || ((_) => JSON.parse(JSON.stringify(_) || null))
+
+  constructor(label, taste, cook) {
+    this.label = label || 'Recooker()'
+    this.taste = taste || ($ => true)
+    this.cook = cook || ($ => JSON.parse(JSON.stringify($) || null))
   }
 
-  cook($) {
+  assemble(label, ...args) {
+    let last = this
+    for (let next = last.next; next; next = last.next)
+      last = next
+    let taste, cook
+    if (args.length > 1)
+      [ taste, cook ] = args
+    else if (args.length > 0)
+      [ cook ] = args
+    last.next = new Recooker(label, taste, cook)
+    return this
+  }
+
+  toString() {
+    return JSON.stringify(this)
+  }
+
+  recook($) {
     let cooker = this
     while (cooker) {
-      $ = cooker.functor($)
+      if (cooker.taste($)) $ = cooker.cook($)
       cooker = cooker.next
     }
     return $
   }
 
-  recook(name, functor) {
-    let last = this
-    for (let next = last.next; next; next = last.next)
-      last = next
-    last.next = new Recooker(name, functor)
-    return this
-  }
-
-  set(name, value) {
-    return this.recook(`set(${name}, ${value})`, ($) => {
-      return Object.assign($ || {},
-        { [name]: typeof value === 'function'? value($): value })
+  set(name, _) {
+    return this.assemble(`set(${name}, ${_})`, ($) => {
+      return Object.assign($ || {}, { [name]: 'function' === typeof _? _($): _ })
     })
   }
 
-  rename(newname, oldname) {
-    return this.recook(`rename(${newname}, ${oldname})`, ($) => {
-      if ('undefined' !== typeof $[oldname]) {
-        $[newname] = $[oldname]
-        delete $[oldname]
+  rename(newName, oldName) {
+    return this.assemble(`rename(${newName}, ${oldName})`, $ => {
+      if ('undefined' !== typeof $[oldName]) {
+        $[newName] = $[oldName] && delete $[oldName]
       }
       return $
     })
