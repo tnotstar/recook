@@ -1,6 +1,6 @@
 {
   "name": "recook",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A JSON tree transformation micro-engine (inspired by adapt)",
   "scripts": {
     "test": "jest"
@@ -17,7 +17,7 @@
     "javascript"
   ],
   "author": "Antonio Alvarado Hernández <tnotstar@gmail.com>",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/tnotstar/recook/issues"
   },

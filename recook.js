@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Antonio Alvarado Hernández
+// Copyright (c) 2020-2022, Antonio Alvarado Hernández
 
 class Recooker {
   constructor({ label, taste, cook, ...options } = {}) {
